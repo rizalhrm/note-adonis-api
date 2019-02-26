@@ -34,12 +34,12 @@ Route.group(() => {
   Route.patch('category/:id', 'CategoryController.update')
   Route.delete('category/:id', 'CategoryController.delete')
 
-  Route.post("auth/register", "AuthController.register").middleware(['guest'])
-  Route.post("auth/login", "AuthController.login").middleware(['guest'])
-  Route.post("auth/logout", "AuthController.logout").middleware("auth");
-  Route.post("auth/refresh_token", "AuthController.refreshToken");
+  Route.post("register", "AuthController.register").middleware(['guest'])
+  Route.post("login", "AuthController.login").middleware(['guest'])
+  Route.post("logout", "AuthController.logout").middleware("auth");
+  Route.post("refresh_token", "AuthController.refreshToken");
 
-  Route.get('profile/:id', 'UserController.show').middleware(['auth'])
-  Route.patch('profile/:id', 'UserController.editProfile').middleware(['auth'])
+  Route.get('profile/:id', 'AuthController.show').middleware(['auth'])
+  Route.patch('profile/:id', 'AuthController.editProfile').middleware(['auth'])
 
 }).prefix('api/v1')
