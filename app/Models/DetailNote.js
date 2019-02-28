@@ -3,18 +3,18 @@
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model')
 
-class Profile extends Model {
+class DetailNote extends Model {
     static get table() {
-        return "profiles";
+        return "detail_notes";
       }
     
     static get primaryKey() {
         return "id";
     }
 
-    users () {
-        return this.belongsTo('App/Models/User')
-    }    
+    notes () {
+        return this.hasOne('App/Models/Note')
+    }
 }
 
-module.exports = Profile
+module.exports = DetailNote

@@ -66,57 +66,20 @@ class AuthController {
 
 	async logout({ auth, response }) {
     const apiToken = auth.getAuthHeader();
-    await auth.revokeTokens([apiToken], true);
-    return response.status(200).json({
-      msg: "Logout Success!"
-    });
+    await auth
+			.authenticator('jwt')
+			.revokeTokens([apiToken])
+		return response.send({ message: 'Logout successfully '})
   }
 
-	async show({ auth, params, response }) {
-		try {
-			const user = await auth.getUser()
-			const profile = await user.profiles().fetch()
-			if(auth.user.id !== Number(params.id)) {
-				return 'you cant access other user'
-			}
-			return {
-				status: 'success',
-				data: { ...user.toJSON(), profile }
-			}
-		} catch(e) {
-			return {
-				status: 'failed',
-				message: 'Missing or invalid jwt token!'
-			}
-		}
-	}
-
-	async editProfile({ auth, params, request }) {
-		const { name, birth_date, gender } = request.post()
-		try {
-			const user = await auth.getUser()
-			const profile = await user.profiles().fetch()
-			if(auth.user.id !== Number(params.id)) {
-				return 'you cant access other user'
-			}
-
-			profile.name = name
-			profile.birth_date = birth_date
-			profile.gender = gender
-			
-			await profile.save()
-
-			return {
-				status: 'success',
-				data: { ...profile.toJSON() }
-			}
-		} catch(e) {
-			return {
-				status: 'failed',
-				message: e.message
-			}
-		}
-	}
+	async profile({ request, auth, response }) {
+    try {
+      let profile = await auth.getUser();
+      response.status(200).json(profile);
+    } catch (error) {
+      response.send("Missing or invalid jwt token");
+    }
+  }
 
 }
 

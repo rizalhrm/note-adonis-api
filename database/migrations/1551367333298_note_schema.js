@@ -13,8 +13,6 @@ class NoteSchema extends Schema {
       .references("id")
       .inTable("users");
       table.string("title");
-      table.text("note");
-      table.text("image");
       table.text("audio");
       table.timestamps()
     })

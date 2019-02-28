@@ -22,24 +22,20 @@ Route.get('/', () => {
 
 Route.group(() => {
 
-  Route.get('notes', 'NoteController.index')
-  Route.get('note/:id', 'NoteController.show')
-  Route.post('notes', 'NoteController.store')
-  Route.patch('note/:id', 'NoteController.update')
-  Route.delete('note/:id', 'NoteController.delete')
+  Route.get('notes', 'NoteController.index');
+  Route.get('notes/lastid', 'NoteController.lastid');
+  Route.get('note/:id', 'NoteController.show');
+  Route.post('notes', 'NoteController.store');
+  Route.patch('note/:id', 'NoteController.update');
+  Route.delete('note/:id', 'NoteController.delete');
+  
+  Route.post("register", "AuthController.register").middleware('guest')
+  Route.post("login", "AuthController.login").middleware('guest')
+  Route.post("logout", "AuthController.logout").middleware("auth")
+  Route.post("refresh_token", "AuthController.refreshToken")
+  Route.post("profile", "AuthController.profile").middleware("auth")
 
-  Route.get('categories', 'CategoryController.index')
-  Route.get('category/:id', 'CategoryController.show')
-  Route.post('categories', 'CategoryController.store')
-  Route.patch('category/:id', 'CategoryController.update')
-  Route.delete('category/:id', 'CategoryController.delete')
-
-  Route.post("register", "AuthController.register").middleware(['guest'])
-  Route.post("login", "AuthController.login").middleware(['guest'])
-  Route.post("logout", "AuthController.logout").middleware("auth");
-  Route.post("refresh_token", "AuthController.refreshToken");
-
-  Route.get('profile/:id', 'AuthController.show').middleware(['auth'])
-  Route.patch('profile/:id', 'AuthController.editProfile').middleware(['auth'])
+  Route.get("user/:uid", "ProfileController.getProfile").middleware("auth")
+  Route.post("user", "ProfileController.updateProfile").middleware("auth")
 
 }).prefix('api/v1')
