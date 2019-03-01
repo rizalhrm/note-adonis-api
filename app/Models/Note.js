@@ -23,10 +23,6 @@ class Note extends Model {
 		return super.formatDates(field, value)
     }
 
-    detail_notes () {
-        return this.belongsTo('App/Models/DetailNote')
-    }
-
     users () {
         return this.belongsTo('App/Models/User')
     }

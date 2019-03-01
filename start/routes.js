@@ -21,21 +21,26 @@ Route.get('/', () => {
 })
 
 Route.group(() => {
-
-  Route.get('notes', 'NoteController.index');
-  Route.get('notes/lastid', 'NoteController.lastid');
-  Route.get('note/:id', 'NoteController.show');
-  Route.post('notes', 'NoteController.store');
-  Route.patch('note/:id', 'NoteController.update');
-  Route.delete('note/:id', 'NoteController.delete');
-  
   Route.post("register", "AuthController.register").middleware('guest')
   Route.post("login", "AuthController.login").middleware('guest')
   Route.post("logout", "AuthController.logout").middleware("auth")
   Route.post("refresh_token", "AuthController.refreshToken")
   Route.post("profile", "AuthController.profile").middleware("auth")
-
-  Route.get("user/:uid", "ProfileController.getProfile").middleware("auth")
-  Route.post("user", "ProfileController.updateProfile").middleware("auth")
-
 }).prefix('api/v1')
+
+Route.group(() => {
+  Route.get("/:uid", "ProfileController.getProfile").middleware("auth")
+  Route.post("/", "ProfileController.updateProfile").middleware("auth")
+}).prefix("api/v1/user");
+
+Route.group(() => {
+  Route.get('/:id', 'NoteController.show');
+  Route.patch('/:id', 'NoteController.update');
+  Route.delete('/:id', 'NoteController.delete');
+}).prefix("api/v1/note");
+
+Route.group(() => {
+  Route.get('/', 'NoteController.index');
+  Route.get('/lastid', 'NoteController.lastid');
+  Route.post('/', 'NoteController.store');
+}).prefix("api/v1/notes");

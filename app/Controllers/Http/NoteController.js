@@ -8,7 +8,6 @@ class NoteController {
     async index ({ response }) {
         try {
             let notes = await Note.query()
-                                  .with('detail_notes')
                                   .with('users')
                                   .orderBy('created_at', 'desc').fetch()
             return response.json(notes)
@@ -35,10 +34,8 @@ class NoteController {
 
     async store ({request, response}) {
         try {
-            const noteData = request.only(['user_id', 'title', 'audio'])
+            const noteData = request.only(['user_id', 'title', 'text', 'image', 'audio'])
             const note = await Note.create(noteData)
-            const detailNoteData = new DetailNote(request.only(['notes_id' ,'generate_id', 'text']))
-            await detailNoteData.save()
 
             return response.status(201).json(note)
         } catch (err) {
@@ -63,7 +60,7 @@ class NoteController {
 
     async update ({params, request, response}) {
         try {
-            const noteData = request.only(['title', 'detail_notes_id', 'audio'])
+            const noteData = request.only(['title', 'text'])
             const note = await Note.find(params.id)
 
             if (!note) {
@@ -71,9 +68,7 @@ class NoteController {
             }
 
             note.title = noteData.title
-            note.note = noteData.note
-            note.image = noteData.image
-            note.audio = noteData.audio
+            note.text = noteData.text
 
             await note.save()
             return response.status(200).json(note)

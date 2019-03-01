@@ -11,10 +11,6 @@ class DetailNote extends Model {
     static get primaryKey() {
         return "id";
     }
-
-    notes () {
-        return this.hasOne('App/Models/Note')
-    }
 }
 
 module.exports = DetailNote
