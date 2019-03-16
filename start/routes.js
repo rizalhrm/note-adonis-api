@@ -26,6 +26,7 @@ Route.group(() => {
   Route.post("logout", "AuthController.logout").middleware("auth")
   Route.post("refresh_token", "AuthController.refreshToken")
   Route.post("profile", "AuthController.profile").middleware("auth")
+  Route.get('auth/check', 'AuthController.accountCheck').middleware('auth')
 }).prefix('api/v1')
 
 Route.group(() => {
